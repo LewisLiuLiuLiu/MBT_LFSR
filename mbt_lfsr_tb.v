@@ -43,7 +43,7 @@
  *
  ****************************************************************************/
 
-`timescale 1ns / 1ps // Recommended timescale directive
+`timescale 1ns / 1ps
 
 module mbt_lfsr_tb;
 
@@ -65,7 +65,9 @@ module mbt_lfsr_tb;
 
   integer clk_num = 0;
 
+//------------------------------------------------------------------------
 // Default WIDTH and TAPs, different TPUTs (throughput)
+
   wire value_1b;
   mbt_lfsr #(.TPUT(1)) lfsr__def_1b (value_1b, clk, reset, 1'b0, 26'b0);
 
@@ -84,14 +86,13 @@ module mbt_lfsr_tb;
 // The output of the following instantiation are not connected.
 // They only show some valid instantiations
 
-
+  // Max TPUT for this LFSR is 6
   mbt_lfsr #(.WIDTH(30), .TPUT(6), .TAP3(16), .TAP2(15), .TAP1(1), .TAP0(0) ) 
              lfsr_30_4 (, clk, reset, 1'b0, 30'b0);
 
-//  Similar to above, but Compilation Error, because TPUT is big
+//  Same as the above LFSR, but Compilation Error, because TPUT is big
 //  mbt_lfsr #(.WIDTH(30), .TPUT(7), .TAP3(16), .TAP2(15), .TAP1(1), .TAP0(0) ) 
 //             lfsr_30_4 (, clk, reset, 1'b0, 30'b0);
-
 
   // 16 bit throughput from 2-tap 35-bit LFSR
   mbt_lfsr #(.WIDTH(35), .TPUT(16), .TAP1(2), .TAP0(0) ) 
@@ -104,7 +105,6 @@ module mbt_lfsr_tb;
   // 24 bit throughput from 6-tap 72-bit LFSR
   mbt_lfsr #(.WIDTH(72), .TPUT(24), .TAP5(22), .TAP4(14), .TAP3(11), .TAP2(10), .TAP1(6), .TAP0(0) ) 
              lfsr_72_24 (, clk, reset, 1'b0, 72'b0);
-
 
 
   always @(posedge clk)

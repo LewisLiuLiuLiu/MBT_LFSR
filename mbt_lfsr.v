@@ -56,12 +56,12 @@
  *
  ****************************************************************************/
 
-`timescale 1ns / 1ps // Recommended timescale directive
+`timescale 1ns / 1ps
 
 module mbt_lfsr(out, clk, reset, seed_str, seed_val);
 
-  parameter WIDTH = 26; //# of LFSR bits
-  parameter TPUT = 8;   //# of TPUT bits
+  parameter WIDTH = 26; //# of LFSR bits (n)
+  parameter TPUT = 8;   //# of TPUT bits (k)
   // Up to 6 taps can be defined. Leave unused TAPs to 0
   parameter TAP0 = 0;
   parameter TAP1 = 3;
@@ -84,11 +84,13 @@ module mbt_lfsr(out, clk, reset, seed_str, seed_val);
     localparam MAX_T45 = (TAP4 > TAP5) ? TAP4 : TAP5;
     localparam MAX_T0123 = (MAX_T01 > MAX_T23) ? MAX_T01 : MAX_T23;
     localparam MAX_T = (MAX_T0123 > MAX_T45) ? MAX_T0123 : MAX_T45;
+    //I know, the above lines can be combined into a large line
+    //But it is more readable and debuggable this way
   
-    if ((MAX_T + 1) > (WIDTH - TPUT - TPUT)) begin : Params_chk
+    if ((MAX_T + 1) > (WIDTH - TPUT - TPUT)) begin : CHK_PARAMS
       // This invalid line generates compilation error
       invalid_line();
-    end else begin : width_check_pass
+    end else begin : PARAMS_PASS
       // Do nothing
     end
   endgenerate  
